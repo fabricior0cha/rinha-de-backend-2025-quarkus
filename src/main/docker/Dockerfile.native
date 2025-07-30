@@ -1,0 +1,10 @@
+FROM ghcr.io/graalvm/native-image:ol8-java21-22.3.0 AS build
+WORKDIR /project
+COPY . .
+RUN ./mvnw package -Pnative -DskipTests
+
+# Etapa de runtime com imagem mínima
+FROM scratch
+COPY --from=build /project/target/*-runner /app
+EXPOSE 8080
+ENTRYPOINT ["/app"]
