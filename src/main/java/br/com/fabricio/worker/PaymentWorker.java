@@ -8,7 +8,6 @@ import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.event.Observes;
 import jakarta.inject.Inject;
-import jakarta.inject.Singleton;
 import jakarta.json.Json;
 import jakarta.json.JsonObject;
 import jakarta.json.JsonObjectBuilder;
@@ -47,17 +46,19 @@ public class PaymentWorker {
     @Inject
     PaymentService service;
 
+
+
     private final HttpClient client = HttpClient.newBuilder()
             .connectTimeout(Duration.ofSeconds(10))
             .version(HttpClient.Version.HTTP_2)
             .build();
 
     void onStart(@Observes StartupEvent ev) {
+
     }
 
     @PostConstruct
     public void init() {
-
         for (int i = 0; i < MAX_THREADS; i++) {
             Thread.startVirtualThread(this::process);
         }
